@@ -62,7 +62,7 @@
   🛒 Adicionar ao carrinho
       </button>
 
-        <button class="btn-comprar" @click="$router.push('/finalizar')">
+        <button class="btn-comprar" @click="comprarAgora">
           Comprar agora
         </button>
 
@@ -77,15 +77,15 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/config/firebase"
 import { carrinho, carrinhoQuantidade, adicionarAoCarrinho } from "@/stores/carrinho"
  
-
+ 
 
 const route = useRoute()
-
+const router = useRouter()
 const produto = ref(null)
 
 const quantidade = ref(1)
@@ -107,6 +107,11 @@ function adicionarCarrinho(){
   adicionarAoCarrinho(produto.value, quantidade.value)
 }
 
+function comprarAgora(){
+  adicionarAoCarrinho(produto.value, quantidade.value)
+  router.push('/finalizar')
+}
+
 const precoTotal = computed(() => {
     if (!produto.value) return 0
   return (quantidade.value * produto.value.preco).toFixed(2)
@@ -124,7 +129,7 @@ onMounted(async () => {
    produto.value = {
   id: docSnap.id,
   ...docSnap.data()
-}
+} 
     console.log("Produto carregado:", produto.value)
   } else {
     console.log("Produto não encontrado")

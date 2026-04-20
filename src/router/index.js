@@ -6,6 +6,7 @@ import HomeView from '../views/homeview.vue'
 import ProdutoView from '../views/produtoview.vue'
 import CarrinhoView from '../views/carrinhoview.vue'
 import FinalizarView from '../views/finalizarview.vue'
+import SeusPedidosView from '../views/seuspedidosview.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -23,7 +24,8 @@ const routes = [
 },
 {  path: "/carrinho",   component: CarrinhoView },
 
-{ path: '/finalizar', component: FinalizarView }
+{ path: '/finalizar', component: FinalizarView },
+{ path: '/seuspedidos', component: SeusPedidosView }
 
 ]
 
