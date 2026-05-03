@@ -1,95 +1,73 @@
 <template>
-<nav class="navbar">
-  <div class="navbar-content">
+  <nav class="navbar">
+    <div class="navbar-content">
+      <div class="logo">🛒 Sacolão Online</div>
 
-    <!-- Logo -->
-    <div class="logo">
-      🛒 Sacolão Online
-    </div>
+      <div class="actions">
+        <div class="perfil" @click="$router.push('/perfil')">
+          👤 Perfil
+        </div>
 
-    <!-- Ações -->
-    <div class="actions">
-      <div class="perfil">
-        👤 Perfil
+        <div class="carrinho" @click="$router.push('/carrinho')">
+          🛒
+          <span class="badge">{{ carrinhoQuantidade }}</span>
+        </div>
       </div>
+    </div>
+  </nav>
 
-      <div class="carrinho"  @click="$router.push('/carrinho')">
-  🛒
-  <span class="badge">{{ carrinho.length }}</span>
-     
-  </div>
-  </div>
-</div>
-</nav>
-    
   <div v-if="produto" class="produto-container">
-
-    <!-- IMAGEM -->
     <div class="produto-imagem">
       <img :src="produto.imagem" />
     </div>
 
-    <!-- INFO -->
     <div class="produto-info">
-
       <h1>{{ produto.nome }}</h1>
 
       <p class="preco">
-        R$ {{  produto.preco }} 
+        R$ {{ produto.preco }}
       </p>
 
       <p class="descricao">
         {{ produto.descricao }}
       </p>
 
-      <!-- QUANTIDADE -->
       <div class="quantidade">
         <button @click="diminuir">-</button>
 
-        <span>{{ quantidade }} / {{ produto.unidade }} </span>
+        <span>{{ quantidade }} / {{ produto.unidade }}</span>
 
         <button @click="aumentar">+</button>
       </div>
 
-     <p class="preco">
-      Total: R$ {{ precoTotal }}
+      <p class="preco">
+        Total: R$ {{ precoTotal }}
       </p>
 
-      <!-- BOTÕES -->
       <div class="botoes">
-
-       <button class="btn-carrinho" @click="adicionarCarrinho"> 
-  🛒 Adicionar ao carrinho
-      </button>
-
-        <button class="btn-comprar" @click="$router.push('/finalizar')">
-          Comprar agora
+        <button class="btn-carrinho" @click="adicionarCarrinho">
+          🛒 Adicionar ao carrinho
         </button>
 
+        <button class="btn-comprar" @click="comprarAgora">
+          Comprar agora
+        </button>
       </div>
-
     </div>
-
   </div>
-
- 
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/config/firebase"
-import { carrinho, carrinhoQuantidade, adicionarAoCarrinho } from "@/stores/carrinho"
- 
-
+import { carrinhoQuantidade, adicionarAoCarrinho } from "@/stores/carrinho"
 
 const route = useRoute()
-
+const router = useRouter()
 const produto = ref(null)
-
 const quantidade = ref(1)
- 
 
 function aumentar() {
   if (quantidade.value < 5) {
@@ -103,34 +81,33 @@ function diminuir() {
   }
 }
 
-function adicionarCarrinho(){
+function adicionarCarrinho() {
   adicionarAoCarrinho(produto.value, quantidade.value)
 }
 
+function comprarAgora() {
+  adicionarAoCarrinho(produto.value, quantidade.value)
+  router.push('/finalizar')
+}
+
 const precoTotal = computed(() => {
-    if (!produto.value) return 0
+  if (!produto.value) return 0
   return (quantidade.value * produto.value.preco).toFixed(2)
 })
 
 onMounted(async () => {
-
   const produtoId = route.params.id
-
   const docRef = doc(db, "produtos", produtoId)
-
   const docSnap = await getDoc(docRef)
 
   if (docSnap.exists()) {
-   produto.value = {
-  id: docSnap.id,
-  ...docSnap.data()
-}
-    console.log("Produto carregado:", produto.value)
+    produto.value = {
+      id: docSnap.id,
+      ...docSnap.data(),
+    }
   } else {
     console.log("Produto não encontrado")
   }
-  
-
 })
 </script>
 <style scoped>

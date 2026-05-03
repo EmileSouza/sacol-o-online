@@ -1,38 +1,75 @@
-# sacolao-online
+# Sacolão Online
 
-This template should help get you started developing with Vue 3 in Vite.
+Aplicação web de e-commerce para compra de produtos de mercado, com autenticação de usuários, carrinho de compras, perfil, cadastro de endereço/cartão e finalização de pedidos.
 
-## Recommended IDE Setup
+## 📌 Descrição do projeto
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+O `Sacolão Online` simula a jornada completa de compra:
 
-## Recommended Browser Setup
+- Cadastro e login de usuário
+- Navegação por produtos
+- Adição e gerenciamento de itens no carrinho
+- Seleção de endereço e forma de pagamento
+- Finalização de pedido e histórico de compras
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+Objetivo: oferecer uma base prática de front-end com Vue + Firebase para portfólio e evolução do projeto.
 
-## Customize configuration
+## ⚙️ Tecnologias utilizadas
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Vue 3 (Composition API)
+- Vue Router
+- JavaScript (ES Modules)
+- HTML + CSS (Single File Components)
+- Vite
+- Firebase Authentication
+- Cloud Firestore
 
-## Project Setup
+## ▶️ Como rodar o projeto
 
-```sh
+### 1) Pré-requisitos
+
+- Node.js 20+
+- NPM
+
+### 2) Instalar dependências
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 3) Rodar em desenvolvimento
 
-```sh
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+### 4) Gerar build de produção
 
-```sh
+```bash
 npm run build
 ```
+
+### 5) Visualizar build local
+
+```bash
+npm run preview
+```
+
+## 🧠 Funcionalidades principais
+
+- Autenticação de usuário (cadastro/login/logout)
+- Listagem e busca de produtos
+- Página de detalhes do produto com controle de quantidade
+- Carrinho com seleção por item e seleção de todos
+- Resumo de pedido com total dinâmico
+- Checkout com:
+  - seleção de endereço
+  - pagamento por cartão ou Pix
+- Histórico de pedidos por usuário
+- Perfil com gerenciamento de cartões e endereços
+
+## 💡 Observações
+
+- O projeto utiliza Firebase, então é necessário ter configurações válidas no arquivo `src/config/firebase.js`.
+- O gateway de cartão é simulado para fins de estudo.
+- O código foi padronizado e validado com build de produção sem erros.

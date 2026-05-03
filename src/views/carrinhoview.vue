@@ -9,7 +9,7 @@
 
     <!-- Ações -->
     <div class="actions">
-      <div class="perfil">
+      <div class="perfil" @click="$router.push('/perfil')">
         👤 Perfil
       </div>
    </div>
@@ -118,43 +118,44 @@
 </template>
 
 <script setup>
-
 import { carrinho, removerDoCarrinho } from "@/stores/carrinho"
-import { ref, computed } from "vue"
- 
+import { computed, ref, watch } from "vue"
+
 const selecionados = ref([])
 
 const todosSelecionados = computed({
-  get(){
-    return carrinho.value.length > 0 &&
+  get() {
+    return (
+      carrinho.value.length > 0 &&
       selecionados.value.length === carrinho.value.length
+    )
   },
-  set(valor){
-    if(valor){
-      selecionados.value = carrinho.value.map(p => p.id)
-    }else{
+  set(valor) {
+    if (valor) {
+      selecionados.value = carrinho.value.map((produto) => produto.id)
+    } else {
       selecionados.value = []
     }
-  }
+  },
 })
 
-const total = computed(()=>{
-  return carrinho.value
-  .reduce((soma, produto)=>{
-    return soma + produto.preco * produto.quantidade
-  },0)
-  .toFixed(2)
-})
+watch(
+  carrinho,
+  () => {
+    const idsNoCarrinho = new Set(carrinho.value.map((produto) => produto.id))
+    selecionados.value = selecionados.value.filter((id) => idsNoCarrinho.has(id))
+  },
+  { deep: true }
+)
 
-const totalSelecionado = computed(()=>{
+const totalSelecionado = computed(() => {
   return carrinho.value
-    .filter(produto => selecionados.value.includes(produto.id))
-    .reduce((soma, produto)=>{
+    .filter((produto) => selecionados.value.includes(produto.id))
+    .reduce((soma, produto) => {
       return soma + produto.preco * produto.quantidade
-    },0)
+    }, 0)
     .toFixed(2)
 })
- 
 </script>
 
 <style scoped>
@@ -289,6 +290,11 @@ margin-top:30px;
   width:100%;
   font-weight:600;
   cursor:pointer;
+}
+
+.comprar:disabled{
+  background:#a5a5a5;
+  cursor:not-allowed;
 }
 
 .carrinho-container{
