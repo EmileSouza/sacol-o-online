@@ -1,95 +1,78 @@
 <template>
   <nav class="navbar">
-  <div class="navbar-content">
+    <div class="navbar-content">
+      <div class="logo">🛒 Sacolão Online</div>
 
-    <!-- Logo -->
-    <div class="logo">
-      🛒 Sacolão Online
-    </div>
-
-    <!-- Busca -->
-    <div class="search-box">
-      <input 
-        v-model="busca"
-        type="text" 
-        placeholder="Buscar produtos..."
-      />
-    </div>
-
-    <!-- Ações -->
-    <div class="actions">
-      <div class="perfil">
-        👤 Perfil
+      <div class="search-box">
+        <input
+          v-model="busca"
+          type="text"
+          placeholder="Buscar produtos..."
+        />
       </div>
 
-      <div class="carrinho" @click="$router.push('/carrinho')">
-        🛒
-       <span class="badge">{{ carrinho.length }}</span>
+      <div class="actions">
+        <div class="perfil" @click="$router.push('/perfil')">
+          👤 Perfil
+        </div>
+
+        <div class="carrinho" @click="$router.push('/carrinho')">
+          🛒
+          <span class="badge">{{ carrinhoQuantidade }}</span>
+        </div>
       </div>
     </div>
+  </nav>
 
-  </div>
-</nav>
-  
-    <div class="produtos">
-  <div 
-    v-for="produto in produtosFiltrados" 
-    :key="produto.id" 
-    class="card"
-    @click="abrirProduto(produto)"
-  >
-    <img :src="produto.imagem" />
+  <div class="produtos">
+    <div
+      v-for="produto in produtosFiltrados"
+      :key="produto.id"
+      class="card"
+      @click="abrirProduto(produto)"
+    >
+      <img :src="produto.imagem" />
 
-    <div class="info">
-      <h3>{{ produto.nome }}</h3>
-      <p class="preco">
-        R$ {{ Number(produto.preco).toFixed(2) }} / {{ produto.unidade }}
-      </p>
+      <div class="info">
+        <h3>{{ produto.nome }}</h3>
+        <p class="preco">
+          R$ {{ Number(produto.preco).toFixed(2) }} / {{ produto.unidade }}
+        </p>
+      </div>
     </div>
   </div>
-</div>
-
- 
- 
 </template>
 
 <script setup>
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "@/config/firebase"
-import { ref, onMounted } from "vue"
-import { computed } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
-import { carrinhoQuantidade, carrinho } from "@/stores/carrinho"
- 
+import { carrinhoQuantidade } from "@/stores/carrinho"
 
 const router = useRouter()
 
- 
 const produtos = ref([])
-const busca = ref('')
+const busca = ref("")
 
 function abrirProduto(produto) {
   router.push(`/produto/${produto.id}`)
 }
 
-
 onMounted(async () => {
   const querySnapshot = await getDocs(collection(db, "produtos"))
-  
-  produtos.value = querySnapshot.docs.map(doc => ({
+
+  produtos.value = querySnapshot.docs.map((doc) => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
   }))
 })
 
 const produtosFiltrados = computed(() => {
-  return produtos.value.filter(produto =>
-    produto.nome
-      .toLowerCase()
-      .includes(busca.value.toLowerCase())
+  return produtos.value.filter((produto) =>
+    produto.nome.toLowerCase().includes(busca.value.toLowerCase())
   )
 })
- 
 </script>
 
 <style scoped>
