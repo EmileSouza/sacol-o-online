@@ -1,4 +1,4 @@
-  tela-de-perfil-outras-funcionalidades
+ 
 # Sacolão Online
 
 Aplicação web de e-commerce para compra de produtos de mercado, com autenticação de usuários, carrinho de compras, perfil, cadastro de endereço/cartão e finalização de pedidos.
@@ -99,8 +99,7 @@ cd sacolao-online
 # 3. Instale as dependências
   main
 npm install
-
- tela-de-perfil-outras-funcionalidades
+ 
 ### 3) Rodar em desenvolvimento
 
 ```bash
@@ -156,3 +155,7 @@ npm run dev
 npm run build
 npm run preview
  main
+
+
+
+ 🔗 [LinkedIn](https://www.linkedin.com/in/emile-isadora) | 🐙 [GitHub](https://github.com/EmileSouza)
